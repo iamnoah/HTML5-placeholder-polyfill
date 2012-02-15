@@ -2,19 +2,24 @@
 * HTML5 placeholder polyfill
 * @requires jQuery - tested with 1.4.2 but might as well work with older versions
 * 
-* code: https://github.com/ginader/HTML5-placeholder-polyfill
+* code: https://github.com/iamnoah/HTML5-placeholder-polyfill
 * please report issues at: https://github.com/ginader/HTML5-placeholder-polyfill/issues
 *
-* Copyright (c) 2012 Dirk Ginader (ginader.de)
+* Fork authored by Noah Sloan of code by Dirk Ginader (ginader.de) (c) 2012
+* 
 * Dual licensed under the MIT and GPL licenses:
 * http://www.opensource.org/licenses/mit-license.php
 * http://www.gnu.org/licenses/gpl.html
+* 
+* Original Source:
+* https://github.com/ginader/HTML5-placeholder-polyfill
 *
-* Version: 1.1
+* Version: 1.2
 * 
 * History:
 * * 1.0 initial release
 * * 1.1 added support for multiline placeholders in textareas
+* * 1.2 Removed label check. Having a label is strongly recommmended, but not required.
 */
 
 (function($) {
@@ -39,11 +44,6 @@
             overflow : 'hidden'
         });
     }
-    function log(msg){
-        if(debug && window.console && window.console.log){
-            window.console.log(msg);
-        }
-    }
     $.fn.placeHolder = function(config) {
         var o = this;
         this.options = $.extend({
@@ -53,18 +53,8 @@
             var input = $(this),
                 text = input.attr('placeholder'),
                 id = input.attr('id'),
-                label,placeholder,titleNeeded;
-            label = input.closest('label')[0];
-            if(!label && !id){
-                log('the input element with the placeholder needs an id!');
-                return;
-            }
-            label = label || $('label[for="'+id+'"]');
-            if(!label){
-                log('the input element with the placeholder needs a label!');
-                return;
-            }
-            placeholder = $('<span class="'+o.options.className+'">'+text+'</span>').appendTo(label);
+                placeholder,titleNeeded;
+            placeholder = $('<span class="'+o.options.className+'">'+text+'</span>').appendTo(input.parent());
             titleNeeded = (placeholder.width() > input.width());
             if(titleNeeded){
                 placeholder.attr('title',text);
